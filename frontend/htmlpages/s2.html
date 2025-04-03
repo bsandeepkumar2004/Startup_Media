@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideas List</title>
+    <link rel="stylesheet" href="/csspages/s1.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">Latest Ideas</h2>
+        <p id="loadingMessage">Loading ideas...</p>
+        <div id="ideasContainer"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const ideasContainer = document.getElementById('ideasContainer');
+            const loadingMessage = document.getElementById('loadingMessage');
+
+            async function fetchIdeas() {
+                try {
+                    const response = await fetch('/s2/getIdeas', { cache: 'no-store' });
+                    if (!response.ok) throw new Error("Failed to fetch ideas");
+                    
+                    const ideas = await response.json();
+                    loadingMessage.style.display = 'none';
+
+                    if (!ideas.length) {
+                        ideasContainer.innerHTML = "<p>No ideas found.</p>";
+                        return;
+                    }
+
+                    renderIdeas(ideas);
+                } catch (error) {
+                    console.error("Error fetching ideas:", error);
+                    ideasContainer.innerHTML = "<p>Error loading ideas.</p>";
+                }
+            }
+
+            function renderIdeas(ideas) {
+                ideasContainer.innerHTML = ideas.map(idea => `
+                    <div class="idea-card">
+                        <div class="idea-header">
+                            <h3>${idea.title}</h3>
+                            <span class="category">${idea.category}</span>
+                        </div>
+                        <p class="idea-description">${idea.idea}</p>
+                        <div class="idea-footer">
+                            <p><strong>By:</strong> ${idea.username}</p>
+                            <p><strong>Location:</strong> ${idea.location}</p>
+                            <a href="${idea.video}" target="_blank" class="watch-video">Watch Video</a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            fetchIdeas();
+        });
+    </script>
+</body>
+</html>

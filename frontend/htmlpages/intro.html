@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro Page</title>
+    <link rel="stylesheet" href="../csspages/intro.css"> <!-- Link to external CSS -->
+</head>
+<body>
+    <!-- Header with username on the top left -->
+    <header class="header">
+        <div class="welcome-message" id="welcomeMessage">Welcome, <span id="username"></span> !</div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/profile.html">Profile</a></li> <!-- Profile option in navbar -->
+                <li><a href="/logout.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content with options in the center -->
+    <div class="content">
+        <div class="option-container">
+            <div class="option" id="searchIdea" onclick="window.location.href='s2.html'">
+                <h3>Search an Idea</h3>
+                <p>Explore innovative ideas from the community.</p>
+            </div>
+            <div class="option" id="shareIdea" onclick="window.location.href='s1.html' ">
+                <h3>Share an Idea</h3>
+                <p>Contribute your ideas to the community.</p>
+            </div>
+            <div class="option" id="AiIdea" onclick="window.location.href='aiidea.html' ">
+                <h3>Ideas From AI</h3>
+                <p>You can see the Trending Idea's</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch the username from the server using session data
+        fetch('/getUsername')
+            .then(response => response.json())
+            .then(data => {
+                if (data.username) {
+                    document.getElementById('username').textContent = data.username;
+                }
+            })
+            .catch(err => console.log('Error fetching username:', err));
+    </script>
+</body>
+</html>

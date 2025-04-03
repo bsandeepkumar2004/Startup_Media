@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Search</title>
+    <link rel="stylesheet" href="../csspages/aiidea.css ">
+</head>
+<body>
+
+    <nav>
+        <h1>Welcome to AI Search</h1>
+        <input type="text" id="searchInput" placeholder="Ask ChatGPT..." />
+        <button onclick="searchGPT()">Search</button>
+        <a href="intro.html">
+            <button id="backHome">Back to Home</button>
+        </a>
+    </nav>
+
+    <div id="content">
+        <p>Type something in the search bar and get an AI-generated response!</p>
+    </div>
+
+    
+
+    <div id="responseContainer" style="display: none; margin-top: 20px;">
+        <h2>AI Response</h2>
+        <p id="responseText">Loading response...</p>
+    </div>
+
+    <script>
+        async function searchGPT() {
+            const query = document.getElementById("searchInput").value;
+
+            if (!query) {
+                alert("Please enter a question!");
+                return;
+            }
+
+            try {
+                const response = await fetch("/aiidea/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ question: query })
+                });
+
+                console.log("Raw response:", response);
+
+                const text = await response.text();
+                console.log("Response text:", text);
+
+                try {
+                    const data = JSON.parse(text); 
+                    document.getElementById("content").style.display = "none";
+                    document.getElementById("responseContainer").style.display = "block";
+                    document.getElementById("responseText").textContent = data.answer;
+                } catch (jsonError) {
+                    console.error("JSON Parsing Error:", jsonError);
+                    document.getElementById("responseText").textContent = "Invalid response from server.";
+                }
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                document.getElementById("responseText").textContent = "Error: Unable to connect to server.";
+            }
+        }
+
+    </script>
+
+</body>
+</html>

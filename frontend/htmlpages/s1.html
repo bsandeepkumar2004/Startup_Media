@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Idea</title>
+    <link rel="stylesheet" href="/csspages/s1.css">
+</head>
+<body>
+    <div class="container">
+        <h1>An Idea May Change the World - It's Your Turn</h1>
+        <h2>Try it Now</h2>
+        <form id="ideaForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+
+            <label for="title">Title of Idea:</label>
+            <input type="text" id="title" name="title" placeholder="Title" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Explain About Agenda With Your Details" required></textarea>
+
+            <label for="video">Video Link:</label>
+            <input type="text" id="video" name="video" placeholder="Give Vedio Link" required>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="Technology">Technology</option>
+                <option value="Education">Education</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Environment">Environment</option>
+                <option value="Others">Others</option>
+            </select>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" placeholder="Location Of Owner" required>
+            <button type="submit">Submit Idea</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('ideaForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            try {
+                // Fetch session username only once
+                const sessionResponse = await fetch('/session-user', { credentials: 'include' });
+                const sessionData = await sessionResponse.json();
+    
+                if (!sessionData.username) {
+                    alert("You must be logged in to submit an idea.");
+                    window.location.href = "/login.html";
+                    return;
+                }
+    
+                // Prepare form data
+                const formData = {
+                    username: sessionData.username, // Use session username
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value,
+                    video: document.getElementById('video').value,
+                    category: document.getElementById('category').value,
+                    location: document.getElementById('location').value
+                };
+    
+                // Send POST request
+                const response = await fetch('/s1/submitIdea', {  // 🔹 Ensure correct endpoint
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    alert("Idea submitted successfully!");
+                    window.location.href = "/intro.html"; // Redirect after success
+                } else {
+                    alert("Error: " + data.error);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while submitting your idea.");
+            }
+        });
+    </script>
+    
+</body>
+</html>

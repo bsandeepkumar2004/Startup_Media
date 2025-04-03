@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/csspages/profile.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h1>User Profile</h1>
+        <div class="profile-details">
+            <p><strong>Username:</strong> <span id="username"></span></p>
+            <p><strong>Password:</strong> <span id="password">********</span></p>
+            <button id="togglePassword">Show Password</button>
+        </div>
+
+        <div class="change-password-container">
+            <h2>Change Password</h2>
+            <form id="changePasswordForm">
+                <label for="currentPassword">Current Password:</label>
+                <input type="password" id="currentPassword" placeholder="Enter current password" required>
+
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword" placeholder="Enter new password" required>
+
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+
+                <button type="submit" id="changePasswordBtn">Change Password</button>
+            </form>
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const usernameElement = document.getElementById('username');
+            const passwordElement = document.getElementById('password');
+            const togglePasswordBtn = document.getElementById('togglePassword');
+            const changePasswordBtn = document.getElementById('changePasswordBtn');
+            const messageElement = document.getElementById('message');
+
+            // Fetch user profile data
+            async function fetchUserProfile() {
+                try {
+                    const response = await fetch('/profile/user');
+                    const data = await response.json();
+                    if (data.success) {
+                        usernameElement.textContent = data.username;
+                    } else {
+                        messageElement.textContent = "Error fetching profile.";
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    messageElement.textContent = "Failed to fetch user profile.";
+                }
+            }
+
+            // Toggle password visibility
+            togglePasswordBtn.addEventListener('click', () => {
+                if (passwordElement.textContent === "********") {
+                    passwordElement.textContent = "Hidden for security"; // Prevent showing actual password
+                    togglePasswordBtn.textContent = "Hide Password";
+                } else {
+                    passwordElement.textContent = "********";
+                    togglePasswordBtn.textContent = "Show Password";
+                }
+            });
+
+            // Change password functionality
+            changePasswordBtn.addEventListener('click', async (event) => {
+                event.preventDefault();
+
+                const currentPassword = document.getElementById('currentPassword').value.trim();
+                const newPassword = document.getElementById('newPassword').value.trim();
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    messageElement.textContent = "Please fill in all fields.";
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    messageElement.textContent = "Passwords do not match!";
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/profile/change-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ currentPassword, newPassword })
+                    });
+
+                    const result = await response.json();
+                    messageElement.textContent = result.message;
+                } catch (error) {
+                    console.error("Error:", error);
+                    messageElement.textContent = "Failed to change password. Please try again.";
+                }
+            });
+
+            // Fetch user data on page load
+            fetchUserProfile();
+        });
+    </script>
+</body>
+</html>

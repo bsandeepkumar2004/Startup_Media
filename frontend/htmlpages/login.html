@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../csspages/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login to Your Account</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Enter Username" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="register.html">Register</a></p>
+        <p id="message"></p>  <!-- To display messages -->
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            const messageEl = document.getElementById("message");
+
+            if (response.ok) {
+                messageEl.style.color = "green";
+                messageEl.innerText = data.message;
+                setTimeout(() => {
+                    window.location.href = "intro.html";  // Redirect to intro page after login
+                }, 1500);
+            } else {
+                messageEl.style.color = "red";
+                messageEl.innerText = data.error;
+            }
+        });
+    </script>
+</body>
+</html>
