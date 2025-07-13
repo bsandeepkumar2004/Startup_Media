@@ -1,4 +1,4 @@
-#Start Up Media
+# Start Up Media
 
 **Startup Media** is a platform designed to connect early-stage startups with visionary investors. It aims to solve a real-world problem: many brilliant startup ideas go unnoticed due to a lack of exposure, and many investors struggle to find promising, innovative projects.
 
