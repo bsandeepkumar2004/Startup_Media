@@ -4,6 +4,7 @@
 
 ## Problem Statement
 
+
 In the current startup ecosystem:
 - Founders lack exposure and access to capital.
 - Investors lack direct access to unique and vetted startup ideas.
@@ -25,8 +26,8 @@ node server.js
 
 ## Output
 
-<img width="1366" height="720" alt="Screenshot 2025-04-03 205733" src="https://github.com/user-attachments/assets/a2bbf50e-bded-4ac0-8c6f-6924b1816543" />
 <img width="1366" height="720" alt="Screenshot 2025-04-03 205717" src="https://github.com/user-attachments/assets/d9974132-26c8-4992-bd7c-f032dd9659aa" />
+<img width="1366" height="720" alt="Screenshot 2025-04-03 205733" src="https://github.com/user-attachments/assets/a2bbf50e-bded-4ac0-8c6f-6924b1816543" />
 <img width="1360" height="632" alt="Screenshot 2025-04-03 205800" src="https://github.com/user-attachments/assets/81957d71-dbe6-44ad-a727-0dc0e2c6554e" />
 
 
