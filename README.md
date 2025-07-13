@@ -24,12 +24,6 @@ Run `npm install dotenv` to install dependencies.
 Run `npm install --save-dev nodemon` to install dependencies.
 Run `node server.js` to Run.
 
-npm init -y
-npm install express
-npm install dotenv
-npm install --save-dev nodemon
-node server.js
-
 ## Output
 
 <img width="1366" height="720" alt="Screenshot 2025-04-03 205717" src="https://github.com/user-attachments/assets/d9974132-26c8-4992-bd7c-f032dd9659aa" />
