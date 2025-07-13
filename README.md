@@ -18,6 +18,12 @@ Startup Media provides:
 - Real-time tracking of **startup pitch submissions**, **investor interest**, and **funding status**.
 
 ## Installation
+Run `npm init -y` to install dependencies.
+Run `npm install express` to install dependencies.
+Run `npm install dotenv` to install dependencies.
+Run `npm install --save-dev nodemon` to install dependencies.
+Run `node server.js` to Run.
+
 npm init -y
 npm install express
 npm install dotenv
